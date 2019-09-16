@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NebliDex_Mobile.WalletPage"
+             xmlns:local="clr-namespace:NebliDex_Mobile"
+             BackgroundColor="Black">
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <!-- Wallet List ListView -->
+            <ListView x:Name="Wallet_View" 
+                                  HorizontalOptions="FillAndExpand" 
+                                  VerticalOptions="FillAndExpand"
+                                  SeparatorVisibility="None" 
+                                  Margin="0" 
+                                  HasUnevenRows="True">
+                <ListView.Header>
+                    <Grid Margin="10,5,10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Text="Coin" TextColor="#9B9B9B" FontSize="14" Grid.Row="0" Grid.Column="0" XAlign="Start"/>
+                        <Label Text="Amount" TextColor="#9B9B9B" FontSize="14" Grid.Row="0" Grid.Column="1" XAlign="Center"/>
+                        <Label Text="Status" TextColor="#9B9B9B" FontSize="14" Grid.Row="0" Grid.Column="2" XAlign="End"/>
+                    </Grid>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="5,10,5,10" Margin="0,2,0,2" BackgroundColor="#131415">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToCoinInfo"/>
+                                </Grid.GestureRecognizers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding Coin}" TextColor="White" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" FontSize="14" XAlign="Start"/>
+
+                                <Label Text="{Binding Amount}" TextColor="White" Grid.Row="0" Grid.Column="1" FontSize="14" XAlign="Center"/>
+
+                                <Label Text="{Binding S_Status}" TextColor="White" Grid.Row="0" Grid.Column="2" FontSize="14" XAlign="End"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!-- Menu Items -->
+            <StackLayout VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="#29323B" Spacing="0">
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             Orientation="Horizontal"
+                             Spacing="0">
+                    <!-- Menu Items -->
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Market Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToMarketPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="marketicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Market"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Trade Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToOrdersPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="tradeicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Trades"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Wallet Item -->
+                        <Image Source="walleticon_high.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Wallet"
+                               TextColor="#AB3FFF"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Settings Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToSettingsPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="settingsicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Settings"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Exit Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Exit_Touched"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="exiticon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Exit"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <!-- End Menu Items -->
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

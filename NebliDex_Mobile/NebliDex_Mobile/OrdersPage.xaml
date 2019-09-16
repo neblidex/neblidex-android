@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NebliDex_Mobile.OrdersPage"
+             xmlns:local="clr-namespace:NebliDex_Mobile"
+             BackgroundColor="Black">
+    <ContentPage.Content>
+        <!-- Orders Layout -->
+        <StackLayout Spacing="0">
+            <!-- Open ListView -->
+            <ListView x:Name="Open_View" 
+                                  HorizontalOptions="FillAndExpand" 
+                                  VerticalOptions="FillAndExpand"
+                                  SeparatorVisibility="None" 
+                                  Margin="10" 
+                                  HasUnevenRows="True" 
+                                  IsVisible="True">
+                <ListView.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Text="Market" TextColor="#9B9B9B" FontSize="10" Grid.Row="0" Grid.Column="0" XAlign="Start"/>
+                        <Label Text="Price/Type" TextColor="#9B9B9B" FontSize="10" Grid.Row="0" Grid.Column="1" XAlign="Center"/>
+                        <Label Text="Amount/% Filled" TextColor="#9B9B9B" FontSize="10" Grid.Row="0" Grid.Column="2" XAlign="End"/>
+                    </Grid>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Margin="0,10,0,10" Spacing="0">
+                                <Grid RowSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="3*"/>
+                                        <RowDefinition Height="2*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Text="{Binding Format_Market}" TextColor="White" Grid.Row="0" Grid.Column="0" FontSize="16" XAlign="Start">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Request_Cancel_Order"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Label Text="Cancel" HorizontalOptions="Fill" VerticalOptions="Fill" TextColor="Red" IsVisible="{Binding Cancel_Visible}" Grid.Row="1" Grid.Column="0" FontAttributes="Bold" FontSize="12" XAlign="Start">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Request_Cancel_Order"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+
+                                    <Label Text="{Binding Format_Price}" TextColor="White" Grid.Row="0" Grid.Column="1" FontSize="16" XAlign="Center"/>
+                                    <Label Text="{Binding Format_Type}" TextColor="White" Grid.Row="1" Grid.Column="1" FontSize="12" XAlign="Center"/>
+
+                                    <Label Text="{Binding Format_Original_Amount}" TextColor="White" Grid.Row="0" Grid.Column="2" FontSize="16" XAlign="End"/>
+                                    <Label Text="{Binding Format_Filled}" FontAttributes="Bold" TextColor="White" Grid.Row="1" Grid.Column="2" FontSize="12" XAlign="End"/>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!-- Historic ListView -->
+            <ListView x:Name="Historic_View" 
+                                  HorizontalOptions="FillAndExpand" 
+                                  VerticalOptions="FillAndExpand"
+                                  SeparatorVisibility="None" 
+                                  Margin="10"
+                                  HasUnevenRows="True" 
+                                  IsVisible="False">
+                <ListView.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Text="Market/Date" TextColor="#9B9B9B" FontSize="10" Grid.Row="0" Grid.Column="0" XAlign="Start"/>
+                        <Label Text="Price/Type" TextColor="#9B9B9B" FontSize="10" Grid.Row="0" Grid.Column="1" XAlign="Center"/>
+                        <Label Text="Amount" TextColor="#9B9B9B" FontSize="10" Grid.Row="0" Grid.Column="2" XAlign="End"/>
+                    </Grid>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Margin="0,10,0,10" RowSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="2*"/>
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding Pair}" TextColor="White" Grid.Row="0" Grid.Column="0" FontSize="16" XAlign="Start"/>
+                                <Label Text="{Binding Date}" TextColor="{Binding Line_Color}" Grid.Row="1" Grid.Column="0" FontSize="10" XAlign="Start"/>
+
+                                <Label Text="{Binding Price}" TextColor="White" Grid.Row="0" Grid.Column="1" FontSize="16" XAlign="Center"/>
+                                <Label Text="{Binding Type}" TextColor="White" Grid.Row="1" Grid.Column="1" FontSize="10" XAlign="Center"/>
+                                
+                                <Label Text="{Binding Amount}" TextColor="White" Grid.Row="0" Grid.Column="2" FontSize="16" XAlign="End"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!-- View Switcher -->
+            <ContentView HorizontalOptions="Fill" BackgroundColor="#131415">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Spacing="0">
+                    <StackLayout Margin="10,10,5,10">
+                        <Label Text="Open"
+                                       TextColor="#FFAE13"    
+                                       WidthRequest="100"
+                                       XAlign="Center"
+                                       x:Name="Label_Open"
+                                />
+                        <BoxView Color="#FFAE13" HeightRequest="2" x:Name="Label_Open_Border"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Show_Open_Orders"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                    <StackLayout Margin="5,10,10,10">
+                        <Label Text="History"
+                                       TextColor="White"      
+                                       WidthRequest="100"
+                                       XAlign="Center"
+                                       x:Name="Label_Historic"
+                                />
+                        <BoxView Color="White" HeightRequest="2" x:Name="Label_Historic_Border"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Show_Historic_Orders"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </StackLayout>
+            </ContentView>
+            <!-- Menu Items -->
+            <StackLayout VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="#29323B" Spacing="0">
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             Orientation="Horizontal"
+                             Spacing="0">
+                    <!-- Menu Items -->
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Market Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToMarketPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="marketicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Market"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Trade Item -->
+                        <Image Source="tradeicon_high.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Trades"
+                               TextColor="#AB3FFF"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Wallet Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToWalletPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="walleticon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Wallet"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Settings Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToSettingsPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="settingsicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Settings"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Exit Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Exit_Touched"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="exiticon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Exit"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:NebliDex_Mobile"
+             x:Class="NebliDex_Mobile.PlaceOrder"
+             BackgroundColor="#131415">
+    <ContentPage.Content>
+        <!-- Place Order Layout -->
+        <StackLayout Spacing="0">
+            <ContentView Padding="3"
+                         BackgroundColor="#29323B"
+                         HorizontalOptions="Fill">
+                <Label Text="Create Limit Order"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       Margin="5"
+                       FontSize="16"
+                       HorizontalOptions="Center"
+                       />
+            </ContentView>
+            <!-- Place Order Options -->
+            <ScrollView HorizontalOptions="Fill"
+                        VerticalOptions="FillAndExpand">
+                <StackLayout Margin="10"
+                         Spacing="0"
+                             HorizontalOptions="Fill"
+                             VerticalOptions="FillAndExpand"
+                         >
+                    <StackLayout VerticalOptions="FillAndExpand">
+                        <Label x:Name="Order_Header"
+                           Text="Buy NDEX"
+                           TextColor="White"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill"
+                           XAlign="Center"
+                           YAlign="Center"
+                           />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Label Text="Balance:"
+                           TextColor="White"
+                           FontSize="14"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="Fill"
+                           XAlign="Start"
+                           YAlign="Center"
+                           />
+                        <Label Text="0 NEBL"
+                           x:Name="My_Balance"
+                           TextColor="White"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="Fill"
+                           XAlign="End"
+                           YAlign="Center"
+                           />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Label Text="Price (NEBL):"
+                           x:Name="Price_Header"
+                           TextColor="White"
+                           FontSize="14"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="Fill"
+                           XAlign="Start"
+                           YAlign="Center"
+                           />
+                        <ContentView HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Fill">
+                            <Entry x:Name="Price_Input"
+                                   Keyboard="Numeric"
+                                TextColor="White"
+                                   Text=""
+                                BackgroundColor="Transparent"
+                                FontSize="14"                          
+                                HorizontalOptions="End"
+                                   TextChanged="Price_KeyUp"
+                               WidthRequest="150"
+                                VerticalOptions="Center"
+                               HorizontalTextAlignment="End"
+                           />
+                        </ContentView>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Label Text="Amount (NDEX):"
+                           x:Name="Amount_Header"
+                           TextColor="White"
+                           FontSize="14"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="Fill"
+                           XAlign="Start"
+                           YAlign="Center"
+                           />
+                        <ContentView HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Fill">
+                            <Entry x:Name="Amount_Input"
+                                   Keyboard="Numeric"
+                                TextColor="White"
+                                   Text=""
+                                BackgroundColor="Transparent"
+                                FontSize="14"             
+                               WidthRequest="150"
+                                   TextChanged="Amount_KeyUp"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center"
+                               HorizontalTextAlignment="End"
+                           />
+                        </ContentView>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Label Text="Minimum Match (NDEX):"
+                           x:Name="Min_Amount_Header"
+                           TextColor="White"
+                           FontSize="14"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="Fill"
+                           XAlign="Start"
+                           YAlign="Center"
+                           />
+                        <ContentView HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Fill">
+                            <Entry x:Name="Min_Amount_Input"
+                                   Keyboard="Numeric"
+                                TextColor="White"
+                                   Text=""
+                                BackgroundColor="Transparent"
+                                FontSize="14"             
+                               WidthRequest="150"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center"
+                               HorizontalTextAlignment="End"
+                           />
+                        </ContentView>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Label Text="Total Cost (NEBL):"
+                           x:Name="Total_Header"
+                           TextColor="White"
+                           FontSize="14"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="Fill"
+                           XAlign="Start"
+                           YAlign="Center"
+                           />
+                        <ContentView HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Fill">
+                            <Entry x:Name="Total_Input"
+                                   Keyboard="Numeric"
+                                TextColor="White"
+                                   Text=""
+                                BackgroundColor="Transparent"
+                                FontSize="14"             
+                               WidthRequest="150"
+                                   TextChanged="Total_KeyUp"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center"
+                               HorizontalTextAlignment="End"
+                           />
+                        </ContentView>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+            <!-- Place order button, red or green depending on order type -->
+            <StackLayout HorizontalOptions="FillAndExpand" BackgroundColor="#29323B" Orientation="Horizontal">
+                <ContentView HorizontalOptions="CenterAndExpand">
+                    <Button Text="Create Order"
+                            x:Name="Order_Button"
+                            TextColor="White"
+                            BackgroundColor="#63AB1D"
+                            HorizontalOptions="Center"
+                            WidthRequest="175"
+                            BorderRadius="0"
+                            Released="Make_Order"
+                            Margin="5"
+                            />
+                </ContentView>
+            </StackLayout>
+            <!-- Menu Items and Status Bar -->
+            <StackLayout VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="#29323B" Spacing="0">
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             Orientation="Horizontal"
+                             Spacing="0">
+                    <!-- Menu Items -->
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Market Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoBackToMarket"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="marketicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Market"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Trade Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToOrdersPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="tradeicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Trades"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Wallet Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToWalletPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="walleticon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Wallet"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Settings Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToSettingsPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="settingsicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Settings"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Exit Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Exit_Touched"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="exiticon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Exit"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

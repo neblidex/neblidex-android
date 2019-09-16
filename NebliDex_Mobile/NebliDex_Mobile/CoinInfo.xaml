@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NebliDex_Mobile.CoinInfo"
+             xmlns:local="clr-namespace:NebliDex_Mobile"
+             BackgroundColor="#131415">
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <!-- Title Bar -->
+            <ContentView Padding="3"
+                         BackgroundColor="#29323B"
+                         HorizontalOptions="Fill">
+                <Label x:Name="Coin_Name"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       Margin="5"
+                       FontSize="16"
+                       HorizontalOptions="Center"
+                       />
+            </ContentView>
+            <ScrollView HorizontalOptions="Fill"
+                        VerticalOptions="FillAndExpand">
+                <StackLayout Padding="0,10,0,10">
+                    <Label Text="Balance"
+                           FontSize="16"
+                           TextColor="DarkGray"
+                           HorizontalOptions="Center"
+                           />
+                    <Label Text="0 NDEX"
+                           x:Name="Balance_Amount"
+                           FontSize="16"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           Margin="0,0,0,20"
+                           />
+                    <Label Text="Status"
+                           FontSize="16"
+                           TextColor="DarkGray"
+                           HorizontalOptions="Center"
+                           />
+                    <Label Text="Available"
+                           x:Name="Status"
+                           FontSize="16"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           Margin="0,0,0,20"
+                           />
+                    <StackLayout BackgroundColor="#1D1E1F" Padding="10">
+                        <Label Text="Deposit"
+                           FontSize="30"
+                           TextColor="#4F5051"
+                           HorizontalOptions="Center"
+                           />
+                        <Label Text="My Wallet Address"
+                           FontSize="12"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                               Margin="0,20,0,0"
+                           />
+                        <ContentView HorizontalOptions="Center">
+                            <ContentView.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CopyAddress"/>
+                            </ContentView.GestureRecognizers>
+                            <Entry InputTransparent="True"
+                                   Text=""
+                                   TextColor="White"
+                                   FontSize="14"
+                                   x:Name="My_Address"
+                                   WidthRequest="350"
+                                   HorizontalTextAlignment="Center"
+                                   />
+                        </ContentView>
+                    </StackLayout>
+                    <Label Text="Withdraw"
+                           FontSize="30"
+                           TextColor="#4F5051"
+                           HorizontalOptions="Center"
+                           Margin="0,10,0,0"
+                           />
+                    <Label Text="Amount"
+                           FontSize="12"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           Margin="0,10,0,0"
+                           />
+                    <Entry Text=""
+                           FontSize="14"
+                           x:Name="Amount_Input"
+                           TextColor="White"
+                           WidthRequest="350"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="End"
+                           Keyboard="Numeric"
+                           />
+                    <Label Text="Destination Address"
+                           FontSize="12"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           Margin="0,5,0,0"
+                           />
+                    <Entry Text=""
+                           FontSize="14"
+                           TextColor="White"
+                           x:Name="Destination"
+                           WidthRequest="350"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           />
+                    <Button Text="Withdraw"
+                            x:Name="Withdraw_Button"
+                            TextColor="White"
+                            BackgroundColor="#EA0070"
+                            HorizontalOptions="Center"
+                            WidthRequest="100"
+                            BorderRadius="0"
+                            Released="Confirm_Withdraw"
+                            Margin="0,10,0,10"
+                            />
+                </StackLayout>
+            </ScrollView>
+            <!-- Menu Items -->
+            <StackLayout VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="#29323B" Spacing="0">
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             Orientation="Horizontal"
+                             Spacing="0">
+                    <!-- Menu Items -->
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Market Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToMarketPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="marketicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Market"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Trade Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToOrdersPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="tradeicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Trades"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Wallet Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoBackToWallet"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="walleticon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Wallet"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Settings Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="GoToSettingsPage"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="settingsicon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Settings"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                        <!-- Exit Item -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Exit_Touched"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image Source="exiticon.png"
+                               Aspect="AspectFit"
+                               HeightRequest="34"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               Margin="0,6,0,0">
+                        </Image>
+                        <Label Text="Exit"
+                               TextColor="#9B9B9B"
+                               FontSize="10"
+                               XAlign="Center"
+                               WidthRequest="60"
+                               HeightRequest="20">
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <!-- End Menu Items -->
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
