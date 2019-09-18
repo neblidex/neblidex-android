@@ -12,7 +12,8 @@ using NebliDex_Mobile.Droid;
 
 namespace NebliDex_Mobile
 {
-	public partial class PlaceOrder : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class PlaceOrder : ContentPage
 	{
 
         int order_type = 0;

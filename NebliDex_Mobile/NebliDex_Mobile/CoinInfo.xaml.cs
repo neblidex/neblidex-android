@@ -15,7 +15,8 @@ using Nethereum;
 
 namespace NebliDex_Mobile
 {
-	public partial class CoinInfo : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class CoinInfo : ContentPage
 	{
 
         MainService.Wallet wallet;

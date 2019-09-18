@@ -23,7 +23,11 @@ namespace NebliDex_Mobile
             //Force run a periodic query
             Task.Run(() =>
             {
-                MainService.PeriodicNetworkQuery(null);
+                if (MainService.PeriodicLongRunnersOpen == false)
+                {
+                    //We want to get balance information
+                    Task.Run(() => MainService.PeriodicLongRunners());
+                }
             });
         }
 

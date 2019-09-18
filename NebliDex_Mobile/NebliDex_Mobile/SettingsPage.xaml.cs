@@ -16,7 +16,8 @@ using NebliDex_Mobile.Droid;
 
 namespace NebliDex_Mobile
 {
-	public partial class SettingsPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class SettingsPage : ContentPage
 	{
 
         public Label Online_Status = null;
@@ -32,12 +33,12 @@ namespace NebliDex_Mobile
                 //Wallet is already encrypted
                 Toggle_Encryption_Label.Text = "Decrypt Wallet";
             }
+        }
 
-            //Force run a periodic query
-            Task.Run(() =>
-            {
-                MainService.PeriodicNetworkQuery(null); //This will also update the online status
-            });
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            MainService.NebliDex_UI.UpdateBlockrates();
         }
 
         //Events
@@ -111,6 +112,15 @@ namespace NebliDex_Mobile
             //This will create a clone of the wallet to an external (outside app) location
             string external_path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath;
             if (external_path == null) { return; }
+            bool ok_write = MainService.NebliDex_UI.CheckWritePermissions();
+            if (ok_write == false) { return; } //Not able to write
+
+            //Create Directory if not present
+            if (Directory.Exists(external_path) == false)
+            {
+                Directory.CreateDirectory(external_path);
+            }
+
             string wallet_name = "account_backup";
             int num = 0;
             while (true)
@@ -284,6 +294,15 @@ namespace NebliDex_Mobile
                 //This will export the trade history to an external folder
                 string external_path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath;
                 if (external_path == null) { return; }
+                bool ok_write = MainService.NebliDex_UI.CheckWritePermissions();
+                if(ok_write == false) { return; } //Not able to write
+
+                //Create Directory if not present
+                if (Directory.Exists(external_path) == false)
+                {
+                    Directory.CreateDirectory(external_path);
+                }
+
                 string wallet_name = "neblidex_tradehistory";
                 int num = 0;
                 while (true)
@@ -304,7 +323,11 @@ namespace NebliDex_Mobile
                         //Copy to the new path
                         try
                         {
-                            MainService.ExportTradeHistory(thePath);
+                            bool ok = MainService.ExportTradeHistory(thePath);
+                            if(ok == false)
+                            {
+                                throw new Exception("Failed to export trade data");
+                            }
                             MainService.MessageBox("Notice!", "Exported trade history to Downloads as: " + filename, "OK", false);
                         }
                         catch (Exception ex)
@@ -355,6 +378,15 @@ namespace NebliDex_Mobile
             //This will create a clone of the wallet to an external (outside app) location
             string external_path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath;
             if (external_path == null) { return; }
+            bool ok_write = MainService.NebliDex_UI.CheckWritePermissions();
+            if (ok_write == false) { return; } //Not able to write
+
+            //Create Directory if not present
+            if(Directory.Exists(external_path) == false)
+            {
+                Directory.CreateDirectory(external_path);
+            }
+
             string wallet_name = "neblidex_debug";
             int num = 0;
             while (true)

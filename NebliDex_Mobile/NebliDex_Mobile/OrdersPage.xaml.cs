@@ -11,7 +11,8 @@ using NebliDex_Mobile.Droid;
 
 namespace NebliDex_Mobile
 {
-	public partial class OrdersPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class OrdersPage : ContentPage
 	{
         public OrdersPage()
         {
@@ -21,11 +22,6 @@ namespace NebliDex_Mobile
             Open_View.ItemsSource = MainService.MyOpenOrderList;
             Historic_View.ItemsSource = MainService.HistoricalTradeList;
 
-            //Force run a periodic query
-            Task.Run(() =>
-            {
-                MainService.PeriodicNetworkQuery(null);
-            });
         }
 
         //Events

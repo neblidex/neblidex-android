@@ -17,6 +17,7 @@ namespace NebliDex_Mobile
         public static Xamarin.Forms.Color red_candle = Xamarin.Forms.Color.FromHex("#EA0070");
         public static Xamarin.Forms.Color grey_color = Xamarin.Forms.Color.FromHex("#9B9B9B");
         public static Xamarin.Forms.Color blue_color = Xamarin.Forms.Color.FromHex("#09B7FF");
+        public static bool force_reload_marketdata = false;
 
         public App ()
 		{
@@ -59,8 +60,13 @@ namespace NebliDex_Mobile
                 MainPage = new WalletPage();
             }else if(page_num == 4)
             {
+                //Settings Page
                 MainPage = new SettingsPage();
             }
+            Task.Run(() =>
+            {
+                GC.Collect(); //Run garbage collection
+            });
         }
 
         public static void Exit_Requested()
@@ -441,6 +447,23 @@ namespace NebliDex_Mobile
                 }
             }
             UpdateOpenOrderList(market, order_nonce); //This will update the views if necessary and remove the order
+        }
+
+        public bool CheckWritePermissions()
+        {
+            if(Android.Support.V4.Content.ContextCompat.CheckSelfPermission(MainService.NebliDex_Activity,Android.Manifest.Permission.WriteExternalStorage) == Android.Content.PM.Permission.Granted)
+            {
+                return true;
+            }else
+            {
+                //This will request it if not already granted                
+                MainService.NebliDex_Activity.RunOnUiThread(() =>
+                {
+                    MainService.MessageBox("Notice!", "After you grant permission to export this file data, please try again.", "OK", false);
+                    Android.Support.V4.App.ActivityCompat.RequestPermissions(MainService.NebliDex_Activity, new String[] { Android.Manifest.Permission.WriteExternalStorage }, 1);                    
+                });                
+                return false;
+            }
         }
 
         protected override void OnStart ()

@@ -12,8 +12,8 @@ using NebliDex_Mobile.Droid;
 
 namespace NebliDex_Mobile
 {
-
-	public partial class MatchOrder : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class MatchOrder : ContentPage
 	{
         public MainService.OpenOrder window_order;
         public decimal min_ord;

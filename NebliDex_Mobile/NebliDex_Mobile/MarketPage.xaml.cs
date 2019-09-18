@@ -48,7 +48,6 @@ namespace NebliDex_Mobile
             Base_Fee = priv_Base_Fee;
 
             LoadMarketPageUI();
-            market_loading = false;
 		}
 
         private void LoadMarketPageUI()
@@ -67,6 +66,8 @@ namespace NebliDex_Mobile
             Buying_View.ItemsSource = Buying_View_List;
 
             //Load the re-useable boxviews for the chart
+            chart_candles_line.Clear();
+            chart_candles_rect.Clear();
             for (int i = 0; i < 100; i++)
             {
                 //Add the line to the view
@@ -85,10 +86,22 @@ namespace NebliDex_Mobile
             //This will be ran in a separate thread due to SQLite access that may be slow
             //Update the Candles and populate the order lists
             Task.Run(() => {
+                if(App.force_reload_marketdata == true)
+                {
+                    //This will only run if client has been out of sync (sleeping)
+                    MainService.ClearMarketData(MainService.exchange_market);
+                    MainService.GetCNMarketData(MainService.exchange_market);
+                    App.force_reload_marketdata = false;
+                }
                 PopulateOrderList();
                 UpdateCandles();
             });
+            
+        }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
             //Finally, update the blockrates view
             //Show the initial fees as well
             MainService.NebliDex_UI.UpdateBlockrates();

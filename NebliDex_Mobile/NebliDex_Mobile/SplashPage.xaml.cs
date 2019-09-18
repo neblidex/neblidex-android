@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace NebliDex_Mobile
 {
-	public partial class SplashPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class SplashPage : ContentPage
 	{
 		public SplashPage()
 		{
