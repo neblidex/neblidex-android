@@ -248,7 +248,7 @@ namespace NebliDex_Mobile
                 catch (Exception ex)
                 {
                     MainService.NebliDexNetLog("Failed to load wallet, error: "+ex.ToString());
-                    MainService.MessageBox("Notice!", "Failed to load imported NebliDex wallet.", "OK", false);
+                    MainService.MessageBox("Notice!", "Failed to load imported NebliDex wallet. Reverting to old wallet.", "OK", false);
                     try
                     {
                         //Revert the file back to what is was
@@ -260,6 +260,9 @@ namespace NebliDex_Mobile
                                 File.Delete(MainService.App_Path + "/account.dat");
                             }
                             File.Move(MainService.App_Path + "/account_old.dat", MainService.App_Path + "/account.dat");
+                            MainService.my_wallet_pass = ""; //Remove the wallet password
+                            MainService.CheckWallet(); //Ran inline and load password if necessary
+                            MainService.LoadWallet();
                         }
                     }
                     catch (Exception) { }
@@ -357,6 +360,7 @@ namespace NebliDex_Mobile
                     }
                     File.Delete(MainService.App_Path + "/cn_list.dat"); //Delete the old list, then reload from the new seed
                     MainService.FindCNServers(true);
+                    MainService.MessageBox("Notice!", "CN List has been fully updated", "OK", false);
                 }
             });
         }
