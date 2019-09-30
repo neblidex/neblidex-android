@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" package="xyz.neblidex.android" android:installLocation="auto" android:versionName="8.0.0">
-	<uses-sdk android:minSdkVersion="17" android:targetSdkVersion="27" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="xyz.neblidex.android" android:installLocation="auto" android:versionName="8.0.0" android:versionCode="2">
+	<uses-sdk android:minSdkVersion="17" android:targetSdkVersion="28" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="NebliDex" android:theme="@android:style/Theme.DeviceDefault"></application>
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+	<application android:label="NebliDex" android:theme="@android:style/Theme.DeviceDefault" android:icon="@drawable/icon" android:roundIcon="@drawable/icon"></application>
 </manifest>
