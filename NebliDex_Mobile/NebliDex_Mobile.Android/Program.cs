@@ -25,7 +25,7 @@ namespace NebliDex_Mobile.Droid
         //Mainnet version
         public static int protocol_version = 8; //My protocol version
         public static int protocol_min_version = 8; //Minimum accepting protocol version
-        public static string version_text = "v8.0.1";
+        public static string version_text = "v8.0.2";
         public static bool run_headless = false; //If true, this software is ran in critical node mode without GUI on startup
         public static bool http_open_network = true; //This becomes false if user closes window
         public static int sqldatabase_version = 3;
@@ -34,16 +34,8 @@ namespace NebliDex_Mobile.Droid
         //Lowest testnet version: 8
         //Lowest mainnet version: 8
 
-        //Version 8
-        //Added 4 new wallets for Yazom (ZOM), Maker (MKR), Chainlink (LINK) and Basic Attention token (BAT) based on ERC20 standard
-        //Removed 1 wallet for Tangle (TGL) and its market
-        //New markets (10):
-        //ZOM/NEBL, ZOM/LTC, ZOM/BTC
-        //MKR/LTC, MKR/BTC
-        //LINK/NEBL, LINK/LTC, LINK/BTC
-        //BAT/LTC, BAT/BTC
-
-        //Fixed assorted bugs with loading electrum / cn servers, fixed sync clock
+        //Version 8.0.2
+        //Fixed import wallet bug affecting some Android users
 
         public static string App_Path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //This will be the folder for application data
 
