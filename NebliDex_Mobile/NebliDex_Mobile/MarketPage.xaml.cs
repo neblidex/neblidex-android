@@ -704,6 +704,7 @@ namespace NebliDex_Mobile
                         reuseable_rect.Height = height;
 
                         AbsoluteLayout.SetLayoutBounds(bv, reuseable_rect);
+                        bv.Color = App.grey_color;
                         bv.IsVisible = true;
                     }
                     else
