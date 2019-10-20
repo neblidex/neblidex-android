@@ -185,7 +185,7 @@ namespace NebliDex_Mobile
                     return;
                 }
 
-                bool result = MainService.PromptUser("Confirmation", "Importing a previous NebliDex wallet will replace the current wallet Do you want to continue?", "Yes", "No");
+                bool result = MainService.PromptUser("Confirmation", "Importing a previous NebliDex wallet will replace the current wallet. Do you want to continue?", "Yes", "No");
                 if (result == false)
                 {
                     return;
@@ -223,6 +223,7 @@ namespace NebliDex_Mobile
                     {
                         fileData_stream.Seek(0, SeekOrigin.Begin);
                         fileData_stream.CopyTo(account_stream);
+                        account_stream.Close();
                     }
                     fileData_stream.Close();
 
