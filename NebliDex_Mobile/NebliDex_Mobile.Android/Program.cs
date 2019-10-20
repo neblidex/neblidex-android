@@ -23,18 +23,21 @@ namespace NebliDex_Mobile.Droid
         public static bool program_loaded = false; //Returns true when the program has fully loaded
 
         //Mainnet version
-        public static int protocol_version = 8; //My protocol version
-        public static int protocol_min_version = 8; //Minimum accepting protocol version
-        public static string version_text = "v8.0.2";
+        public static int protocol_version = 9; //My protocol version
+        public static int protocol_min_version = 9; //Minimum accepting protocol version
+        public static string version_text = "v9.0.0";
         public static bool run_headless = false; //If true, this software is ran in critical node mode without GUI on startup
         public static bool http_open_network = true; //This becomes false if user closes window
         public static int sqldatabase_version = 3;
         public static int accountdat_version = 1; //The version of the account wallet
 
-        //Lowest testnet version: 8
-        //Lowest mainnet version: 8
+        //Lowest testnet version: 9
+        //Lowest mainnet version: 9
 
-        //Version 8.0.2
+        //Version 9
+        //Added 1 new wallet for wBTC (allows for cross-chain swap into interest earning wBTC)
+        //New market (1):
+        //WBTC/BTC
         //Fixed import wallet bug affecting some Android users
 
         public static string App_Path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //This will be the folder for application data
@@ -52,7 +55,7 @@ namespace NebliDex_Mobile.Droid
         public static int wlan_mode = 0; //0 = Internet, 1 = WLAN, 2 = Localhost (This is for CN IP addresses returned)
 
         public static int exchange_market = 2; //NDEX/NEBL
-        public static int total_markets = 47;
+        public static int total_markets = 48;
         public static int total_scan_markets = total_markets; // This number will vary if we are updating the markets
         public static int total_cointypes = 7;
         //The total amount of cointypes supported by NebliDex
@@ -446,6 +449,13 @@ namespace NebliDex_Mobile.Droid
                     base_wallet = 1;
                     trade_wallet = 23;
                 }
+                else if (index == 47)
+                {
+                    base_symbol = "BTC";
+                    trade_symbol = "WBTC";
+                    base_wallet = 1;
+                    trade_wallet = 24; //WBTC
+                }
             }
 
             public string format_market
@@ -473,7 +483,7 @@ namespace NebliDex_Mobile.Droid
             private int internal_status; //0 - avail, 1 - pending, 2 - waiting
             public int blockchaintype = 0;
 
-            public static int total_coin_num = 24; //Total number of possible different wallet coins
+            public static int total_coin_num = 25; //Total number of possible different wallet coins
 
             public event PropertyChangedEventHandler PropertyChanged;
 
@@ -525,7 +535,7 @@ namespace NebliDex_Mobile.Droid
 
             public static bool CoinERC20(int ctype)
             {
-                if (ctype >= 18 && ctype <= 23)
+                if (ctype >= 18 && ctype <= 24)
                 { //New ETH based ERC20 tokens
                     return true;
                 }
@@ -708,6 +718,10 @@ namespace NebliDex_Mobile.Droid
                     {
                         return "BAT"; //BAT ERC20 token
                     }
+                    else if (type == 24)
+                    {
+                        return "WBTC"; //wBTC ERC20 token
+                    }
                     return "";
                 }
             }
@@ -787,6 +801,17 @@ namespace NebliDex_Mobile.Droid
                             return ""; //Not interacting with testnet
                         }
                     }
+                    else if (type == 24)
+                    { //wBTC Contract
+                        if (testnet_mode == false)
+                        {
+                            return "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599";
+                        }
+                        else
+                        {
+                            return ""; //Not interacting with testnet
+                        }
+                    }
                     return "";
                 }
             }
@@ -823,6 +848,10 @@ namespace NebliDex_Mobile.Droid
                     else if (type == 23)
                     {
                         return 18; //BAT has 18 decimal places
+                    }
+                    else if (type == 24)
+                    {
+                        return 8; //wBTC has 8 decimal places
                     }
                     return 8;
                 }
@@ -2594,7 +2623,36 @@ namespace NebliDex_Mobile.Droid
                     File.Delete(App_Path + "/electrum_peers.dat");
                 }
             }
+
+            // Now sort the Wallet List by name
+            WalletList = SortedWallets(WalletList);
+
             return true;
+        }
+
+        public static ObservableCollection<Wallet> SortedWallets(ObservableCollection<Wallet> original)
+        {
+            ObservableCollection<Wallet> temp_wall = new ObservableCollection<Wallet>();
+            int total_num = original.Count;
+            for (int i = 0; i < total_num; i++)
+            {
+                bool inserted = false;
+                for (int i2 = 0; i2 < temp_wall.Count; i2++)
+                {
+                    if (String.Compare(original[i].Coin, temp_wall[i2].Coin) < 0)
+                    {
+                        //Insert it before
+                        temp_wall.Insert(i2, original[i]);
+                        inserted = true;
+                        break;
+                    }
+                }
+                if (inserted == false)
+                {
+                    temp_wall.Add(original[i]); //Add to end of wallet list
+                }
+            }
+            return temp_wall;
         }
 
         public static bool CheckPendingPayment()
