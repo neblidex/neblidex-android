@@ -4,7 +4,7 @@ NebliDex is a full service decentralized exchange that users can use to trade cr
 NebliDex also supports ERC20 stablecoins USDC & DAI. Its ERC20 atomic swap contract can be found here:
 https://etherscan.io/address/0x1784e5AeC9AD99445663DBCA9462a618BfE545Ac
 
-The matchmaking is performed by Critical Nodes on the network which are volunteers that have at least 39,000 NDEX tokens. Matchmakers/Validators get rewarded by receiving NDEX tokens for their service. Anyone can become a validator as long as they meet the requirements specified in readme_first document. The mobile application does not support critical node functionality. Uers must download the desktop app.
+The matchmaking is performed by Critical Nodes on the network which are volunteers that have at least 39,000 NDEX tokens. Matchmakers/Validators get rewarded by receiving NDEX tokens for their service. Anyone can become a validator as long as they meet the requirements specified in readme_first document. The mobile application does not support critical node functionality. Users must download the desktop app.
 
 ## Bug Reports
 If a bug or vulnerability is found, please export your debug.log via the settings then report it immediately via our bug report form: https://www.neblidex.xyz/bugreport/

@@ -185,7 +185,7 @@ namespace NebliDex_Mobile
                     return;
                 }
 
-                bool result = MainService.PromptUser("Confirmation", "Importing a previous NebliDex wallet will replace the current wallet Do you want to continue?", "Yes", "No");
+                bool result = MainService.PromptUser("Confirmation", "Importing a previous NebliDex wallet will replace the current wallet. Do you want to continue?", "Yes", "No");
                 if (result == false)
                 {
                     return;
@@ -202,12 +202,9 @@ namespace NebliDex_Mobile
                         return; // user canceled file picking
                     }
 
-                    if (fileData.FilePath == null)
-                    {
-                        MainService.MessageBox("Notice!", "Unable to locate this file", "OK", false);
-                        return;
-                    }
-                    if(File.Exists(fileData.FilePath) == false)
+                    Stream fileData_stream = fileData.GetStream(); //Get the stream referenced by the Picked file, we will write it to file
+
+                    if (fileData_stream == null)
                     {
                         MainService.MessageBox("Notice!", "Unable to locate this file", "OK", false);
                         return;
@@ -219,14 +216,17 @@ namespace NebliDex_Mobile
                     }
                     //Move the account.dat to the new location (old file) until the copy is complete
                     File.Move(MainService.App_Path + "/account.dat", MainService.App_Path + "/account_old.dat");
-                    if (File.Exists(fileData.FilePath) == false)
+
+                    //Instead of File.Copy, we need to write the stream to the path at account.dat
+                    //File.Copy may be unreliable if FilePath is null
+                    using (FileStream account_stream = File.Create(MainService.App_Path + "/account.dat"))
                     {
-                        //Revert the changes
-                        File.Move(MainService.App_Path + "/account_old.dat", MainService.App_Path + "/account.dat");
-                        MainService.MessageBox("Notice!", "Unable to import this wallet location.", "OK", false);
-                        return;
+                        fileData_stream.Seek(0, SeekOrigin.Begin);
+                        fileData_stream.CopyTo(account_stream);
+                        account_stream.Close();
                     }
-                    File.Copy(fileData.FilePath, MainService.App_Path + "/account.dat");
+                    fileData_stream.Close();
+
                     MainService.my_wallet_pass = ""; //Remove the wallet password
                     MainService.CheckWallet(); //Ran inline and load password if necessary
                     MainService.LoadWallet();
