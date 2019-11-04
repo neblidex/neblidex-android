@@ -417,7 +417,7 @@ namespace NebliDex_Mobile
                     catch (Exception)
                     {
                         MainService.NebliDexNetLog("Failed to copy debug log to downloads");
-                        MainService.MessageBox("Notice!", "Failed to export debug log to external storage", "OK", false);
+                        MainService.MessageBox("Notice!", "Failed to export debug log to external storage location: "+thePath, "OK", false);
                     }
                     break;
                 }
