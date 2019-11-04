@@ -25,7 +25,7 @@ namespace NebliDex_Mobile.Droid
         //Mainnet version
         public static int protocol_version = 9; //My protocol version
         public static int protocol_min_version = 9; //Minimum accepting protocol version
-        public static string version_text = "v9.0.0";
+        public static string version_text = "v9.0.1";
         public static bool run_headless = false; //If true, this software is ran in critical node mode without GUI on startup
         public static bool http_open_network = true; //This becomes false if user closes window
         public static int sqldatabase_version = 3;
@@ -35,10 +35,7 @@ namespace NebliDex_Mobile.Droid
         //Lowest mainnet version: 9
 
         //Version 9
-        //Added 1 new wallet for wBTC (allows for cross-chain swap into interest earning wBTC)
-        //New market (1):
-        //WBTC/BTC
-        //Fixed import wallet bug affecting some Android users
+        //Fixed EditText issue
 
         public static string App_Path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //This will be the folder for application data
 

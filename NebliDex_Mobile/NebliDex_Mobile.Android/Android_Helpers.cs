@@ -99,9 +99,10 @@ namespace NebliDex_Mobile.Droid
                     input_box.InputType = Android.Text.InputTypes.TextVariationPassword | Android.Text.InputTypes.ClassText;
                 }else
                 {
-                    input_box.InputType = Android.Text.InputTypes.TextVariationNormal;
+                    input_box.InputType = Android.Text.InputTypes.TextVariationNormal | Android.Text.InputTypes.ClassText;
                 }
                 input_box.Text = default_content;
+
                 dialog.SetView(input_box);
                 dialog.SetPositiveButton(okstring, (c, ev) =>
                 {
