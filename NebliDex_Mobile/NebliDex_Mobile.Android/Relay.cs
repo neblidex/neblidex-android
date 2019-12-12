@@ -168,7 +168,7 @@ namespace NebliDex_Mobile.Droid
             if (ord.type != 0 && ord.type != 1) { return false; }
             ord.market = Convert.ToInt32(jord["order.market"].ToString());
             ord.is_request = Convert.ToBoolean(jord["order.is_request"].ToString());
-            if (ord.market < 0 || ord.market >= total_markets) { return false; } //Bad data
+            if (ord.market < 0 || ord.market >= total_markets) { return false; } //Unsupported data
 
             string ip = "";
             string port = "";
@@ -562,6 +562,7 @@ namespace NebliDex_Mobile.Droid
                     js["cn.method"] = "cn.myversion";
                     js["cn.response"] = 0; //This is telling the CN that this is a response
                     js["cn.result"] = protocol_min_version;
+                    js["cn.totalmarkets"] = total_markets; // Tell the CN the markets that we have
                     json_encoded = JsonConvert.SerializeObject(js);
                 }
                 else if (action == 4)
