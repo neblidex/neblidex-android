@@ -189,10 +189,18 @@ namespace NebliDex_Mobile
             if (trade_wallet_blockchaintype == 6)
             {
                 block_fee1 = MainService.GetEtherContractTradeFee(MainService.Wallet.CoinERC20(MainService.MarketList[MainService.exchange_market].trade_wallet));
+                if (MainService.Wallet.CoinERC20(MainService.MarketList[MainService.exchange_market].trade_wallet) == true)
+                {
+                    block_fee1 = Convert.ToDecimal(MainService.double_epsilon); // The minimum trade size for ERC20 tokens
+                }
             }
             if (base_wallet_blockchaintype == 6)
             {
                 block_fee2 = MainService.GetEtherContractTradeFee(MainService.Wallet.CoinERC20(MainService.MarketList[MainService.exchange_market].base_wallet));
+                if (MainService.Wallet.CoinERC20(MainService.MarketList[MainService.exchange_market].base_wallet) == true)
+                {
+                    block_fee2 = Convert.ToDecimal(MainService.double_epsilon); // The minimum trade size for ERC20 tokens
+                }
             }
 
             if (total < block_fee2 || amount < block_fee1)

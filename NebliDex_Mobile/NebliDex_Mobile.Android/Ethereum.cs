@@ -562,9 +562,14 @@ namespace NebliDex_Mobile.Droid
 					if(js["result"]["blockNumber"] == null){
 						return 0; //Transaction not confirmed or not found
 					}
-					Nethereum.Hex.HexTypes.HexBigInteger tx_blocknum = new Nethereum.Hex.HexTypes.HexBigInteger(js["result"]["blockNumber"].ToString());
-					//Search the current block number and compare the difference to get the number for confirmations
-					url = api_endpoint+"?module=proxy&action=eth_blockNumber";
+                    string txnum = js["result"]["blockNumber"].ToString(); //Block number may be "null" number, converts to empty string
+                    if (txnum.Length == 0)
+                    {
+                        return 0; //Transaction not confirmed or not found
+                    }
+                    Nethereum.Hex.HexTypes.HexBigInteger tx_blocknum = new Nethereum.Hex.HexTypes.HexBigInteger(txnum);
+                    //Search the current block number and compare the difference to get the number for confirmations
+                    url = api_endpoint+"?module=proxy&action=eth_blockNumber";
 					resp = HttpRequest(url,"",out timeout);
 					if(resp.Length == 0){
 						NebliDexNetLog("Failed to get response from Etherscan");
@@ -617,9 +622,14 @@ namespace NebliDex_Mobile.Droid
 					if(js["result"]["blockNumber"] == null){
 						return 0; //Transaction not confirmed or not found
 					}
-					Nethereum.Hex.HexTypes.HexBigInteger tx_blocknum = new Nethereum.Hex.HexTypes.HexBigInteger(js["result"]["blockNumber"].ToString());
-					
-					ETH_CALLS++;
+                    string txnum = js["result"]["blockNumber"].ToString(); //Block number may be "null" number, converts to empty string
+                    if (txnum.Length == 0)
+                    {
+                        return 0; //Transaction not confirmed or not found
+                    }
+                    Nethereum.Hex.HexTypes.HexBigInteger tx_blocknum = new Nethereum.Hex.HexTypes.HexBigInteger(txnum);
+
+                    ETH_CALLS++;
 					if(ETH_CALLS >= long.MaxValue){
 						ETH_CALLS = 0;
 					}

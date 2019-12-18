@@ -23,19 +23,22 @@ namespace NebliDex_Mobile.Droid
         public static bool program_loaded = false; //Returns true when the program has fully loaded
 
         //Mainnet version
-        public static int protocol_version = 9; //My protocol version
-        public static int protocol_min_version = 9; //Minimum accepting protocol version
-        public static string version_text = "v9.0.1";
+        public static int protocol_version = 10; //My protocol version
+        public static int protocol_min_version = 10; //Minimum accepting protocol version
+        public static string version_text = "v10.0.0";
         public static bool run_headless = false; //If true, this software is ran in critical node mode without GUI on startup
         public static bool http_open_network = true; //This becomes false if user closes window
         public static int sqldatabase_version = 3;
         public static int accountdat_version = 1; //The version of the account wallet
 
-        //Lowest testnet version: 9
-        //Lowest mainnet version: 9
+        //Lowest testnet version: 10
+        //Lowest mainnet version: 10
 
-        //Version 9
-        //Fixed EditText issue
+        //Version 10
+        //Allow for very small ERC20 order amounts (ideal for wBTC)
+        //Updated DAI contract to new version
+        //Fixed ETH confirmation bug
+        //Allow for new markets without protocol changes	
 
         public static string App_Path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //This will be the folder for application data
 
@@ -735,7 +738,7 @@ namespace NebliDex_Mobile.Droid
                     { //DAI Contract
                         if (testnet_mode == false)
                         {
-                            return "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359";
+                            return "0x6B175474E89094C44Da98b954EedeAC495271d0F"; // Version 2 of contract
                         }
                         else
                         {
@@ -1376,6 +1379,7 @@ namespace NebliDex_Mobile.Droid
         public class CriticalNode
         {
             public string ip_add; //Only field populated by all nodes
+            public int total_markets = MainService.total_markets; //The total markets for the node, this can vary
             public string signature_ip = null; //Used to verify IP address
             public decimal ndex; //Used to get validation node, amount of ndex
             public string pubkey; //Used to verify
