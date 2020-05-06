@@ -157,6 +157,7 @@ namespace NebliDex_Mobile
                     if(page.Trade_Fee == null) { return; } //Page hasn't fully loaded yet
 
                     page.CN_Fee.Text = "CN Fee: " + MainService.ndex_fee;
+                    page.Taker_Fee.Text = "Taker Fee: " + String.Format(CultureInfo.InvariantCulture, "{0:0.##}", Math.Round(MainService.taker_fee * 100, 2)) + "%";
 
                     int trade_wallet_blockchaintype = MainService.GetWalletBlockchainType(MainService.MarketList[MainService.exchange_market].trade_wallet);
                     int base_wallet_blockchaintype = MainService.GetWalletBlockchainType(MainService.MarketList[MainService.exchange_market].base_wallet);

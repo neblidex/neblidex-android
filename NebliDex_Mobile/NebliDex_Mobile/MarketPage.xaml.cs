@@ -34,6 +34,7 @@ namespace NebliDex_Mobile
 
         //Public fields for private views
         public Label CN_Fee;
+        public Label Taker_Fee;
         public Label Trade_Fee;
         public Label Base_Fee;
 
@@ -44,6 +45,7 @@ namespace NebliDex_Mobile
 
             //Make public members for private fiels
             CN_Fee = priv_CN_Fee;
+            Taker_Fee = priv_Taker_Fee;
             Trade_Fee = priv_Trade_Fee;
             Base_Fee = priv_Base_Fee;
 

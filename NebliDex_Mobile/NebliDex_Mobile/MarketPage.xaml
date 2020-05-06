@@ -57,6 +57,12 @@
                            HorizontalOptions="Center"
                            x:Name="priv_CN_Fee"
                            />
+                        <Label Text="Taker Fee: N/A"
+                           FontSize="10"
+                           TextColor="#646464"
+                           HorizontalOptions="Center"
+                           x:Name="priv_Taker_Fee"
+                           />
                         <Label Text="NDEX Fee: N/A"
                            FontSize="10"
                            TextColor="#646464"
