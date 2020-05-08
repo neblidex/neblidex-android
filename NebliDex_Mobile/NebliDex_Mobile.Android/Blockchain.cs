@@ -2844,21 +2844,25 @@ namespace NebliDex_Mobile.Droid
                         //Find the tokens in the unspent
                         bool no_token = true;
                         int height = Convert.ToInt32(utxo["blockheight"].ToString());
-                        foreach (JToken token in utxo["tokens"])
+                        if(utxo["tokens"] != null)
                         {
-                            //There can be more than one token per utxo
-                            no_token = false;
-                            string id = token["tokenId"].ToString();
-                            if (id.Equals(tokenid) == true)
+                            //Neblio daemon will sometimes omit the token array field
+                            foreach (JToken token in utxo["tokens"])
                             {
-                                //This is our desired token
-                                if (height >= 0)
+                                //There can be more than one token per utxo
+                                no_token = false;
+                                string id = token["tokenId"].ToString();
+                                if (id.Equals(tokenid) == true)
                                 {
-                                    sat_amount += Decimal.Parse(token["amount"].ToString());
-                                }
-                                else
-                                {
-                                    unconfirmed_exist = true;
+                                    //This is our desired token
+                                    if (height >= 0)
+                                    {
+                                        sat_amount += Decimal.Parse(token["amount"].ToString());
+                                    }
+                                    else
+                                    {
+                                        unconfirmed_exist = true;
+                                    }
                                 }
                             }
                         }
@@ -3184,15 +3188,19 @@ namespace NebliDex_Mobile.Droid
                         int height = Convert.ToInt32(utxo["blockheight"].ToString());
                         if (height >= 0)
                         { //Do not count unconfirmed transactions
-                            foreach (JToken token in utxo["tokens"])
+                            if (utxo["tokens"] != null)
                             {
-                                //Like mentioned earlier, there can be more than one token per unspent
-                                no_token = false;
-                                string id = token["tokenId"].ToString();
-                                if (id.Equals(tokenid) == true)
+                                //Neblio daemon will sometimes omit the token array field
+                                foreach (JToken token in utxo["tokens"])
                                 {
-                                    //This is our desired token
-                                    sat_amount += Decimal.Parse(token["amount"].ToString());
+                                    //Like mentioned earlier, there can be more than one token per unspent
+                                    no_token = false;
+                                    string id = token["tokenId"].ToString();
+                                    if (id.Equals(tokenid) == true)
+                                    {
+                                        //This is our desired token
+                                        sat_amount += Decimal.Parse(token["amount"].ToString());
+                                    }
                                 }
                             }
                             if (cointype == 0 && no_token == true)
@@ -3378,10 +3386,13 @@ namespace NebliDex_Mobile.Droid
                             line["tx_pos"] = row["index"];
                             line["tx_value"] = row["value"];
                             line["tx_tokenid"] = "";
-                            foreach (JToken token in row["tokens"])
+                            if(row["tokens"] != null)
                             {
-                                line["tx_tokenid"] = token["tokenId"].ToString();
-                                break; //Only get the first token ID, just to verify if tokens are there
+                                foreach (JToken token in row["tokens"])
+                                {
+                                    line["tx_tokenid"] = token["tokenId"].ToString();
+                                    break; //Only get the first token ID, just to verify if tokens are there
+                                }
                             }
                             utxo_array.Add(line);
                             total_utxo++;
@@ -3953,23 +3964,26 @@ namespace NebliDex_Mobile.Droid
                 {
                     bool token_present = false;
                     int token_count = 0;
-                    foreach (JObject token in utxo["tokens"])
+                    if(utxo["tokens"] != null)
                     {
-                        //Go through the list of tokens in this UTXO, may have duplicate tokens
-                        if (token["tokenId"].ToString() == token_types[i])
+                        foreach (JObject token in utxo["tokens"])
                         {
-                            token_present = true;
-                            match = true;
-                            if (tokeninput_amounts.ContainsKey(token_types[i]) == false)
+                            //Go through the list of tokens in this UTXO, may have duplicate tokens
+                            if (token["tokenId"].ToString() == token_types[i])
                             {
-                                tokeninput_amounts[token_types[i]] = Convert.ToInt64(token["amount"].ToString());
+                                token_present = true;
+                                match = true;
+                                if (tokeninput_amounts.ContainsKey(token_types[i]) == false)
+                                {
+                                    tokeninput_amounts[token_types[i]] = Convert.ToInt64(token["amount"].ToString());
+                                }
+                                else
+                                {
+                                    tokeninput_amounts[token_types[i]] += Convert.ToInt64(token["amount"].ToString()); //Get the amount of this token type
+                                }
                             }
-                            else
-                            {
-                                tokeninput_amounts[token_types[i]] += Convert.ToInt64(token["amount"].ToString()); //Get the amount of this token type
-                            }
+                            token_count++;
                         }
-                        token_count++;
                     }
                     if (token_present == true)
                     {
