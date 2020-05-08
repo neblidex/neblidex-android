@@ -3508,6 +3508,11 @@ namespace NebliDex_Mobile.Droid
                                 //Selling the trade wallet amount
                                 int wallet = MarketList[MyOpenOrderList[i].market].trade_wallet;
                                 useable = CheckWalletBalance(wallet, 0, ref msg);
+                                if (useable == true)
+                                {
+                                    // All markets require sellers to pay NDEX in fees, make sure wallet is available
+                                    useable = CheckWalletBalance(3, 0, ref msg);
+                                }
                             }
 
                             if (useable == false) { continue; } //Skip this queued order
@@ -4312,7 +4317,7 @@ namespace NebliDex_Mobile.Droid
             }
         }
 
-        public static void FindValidationNode(DexConnection con, string nonce, int who_validate)
+        public static async void FindValidationNode(DexConnection con, string nonce, int who_validate)
         {
             //This function finds a validation node
             OpenOrder ord = null;
@@ -4352,6 +4357,17 @@ namespace NebliDex_Mobile.Droid
                 }
             }
             if (ord == null) { return; }
+
+            //We need to wait for the trade acceptance message to propagate through the network
+            //The maker requires more time than the taker to propagate the message
+            if (who_validate == 0)
+            {
+                await Task.Delay(15000);
+            }
+            else
+            {
+                await Task.Delay(10000);
+            }
 
             //Now send a message to the dex to acquire a validation node for this order
             //The CN will then also forward this node info to the other node
