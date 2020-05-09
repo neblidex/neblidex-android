@@ -410,6 +410,7 @@ namespace NebliDex_Mobile.Droid
             //First things first, cancel the order on my side (so even if server is down, order is still cancelled)
             lock (MyOpenOrderList)
             {
+            	if(ord.order_stage >= 3){return;} //Can't cancel as order is in trade
                 for (int i = 0; i < MyOpenOrderList.Count; i++)
                 {
                     if (MyOpenOrderList[i].order_nonce.Equals(ord.order_nonce) == true)

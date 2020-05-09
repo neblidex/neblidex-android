@@ -23,22 +23,20 @@ namespace NebliDex_Mobile.Droid
         public static bool program_loaded = false; //Returns true when the program has fully loaded
 
         //Mainnet version
-        public static int protocol_version = 10; //My protocol version
-        public static int protocol_min_version = 10; //Minimum accepting protocol version
-        public static string version_text = "v10.0.2";
+        public static int protocol_version = 11; //My protocol version
+        public static int protocol_min_version = 11; //Minimum accepting protocol version
+        public static string version_text = "v11.0.0";
         public static bool run_headless = false; //If true, this software is ran in critical node mode without GUI on startup
         public static bool http_open_network = true; //This becomes false if user closes window
         public static int sqldatabase_version = 3;
         public static int accountdat_version = 1; //The version of the account wallet
 
-        //Lowest testnet version: 10
-        //Lowest mainnet version: 10
+        //Lowest testnet version: 11
+        //Lowest mainnet version: 11
 
-        //Version 10
-        //Allow for very small ERC20 order amounts (ideal for wBTC)
-        //Updated DAI contract to new version
-        //Fixed ETH confirmation bug
-        //Allow for new markets without protocol changes	
+        //Version 11
+        //Changed fee schedule, added a taker only fee of 0.2%
+        //Fix possible case where ERC20 token transaction fails due to unallocated allowance
 
         public static string App_Path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //This will be the folder for application data
 
@@ -1531,8 +1529,9 @@ namespace NebliDex_Mobile.Droid
 
             //Now create database
             if (NebliDex_Activity != null)
-            {
+            {              
                 NebliDex_Activity.RunOnUiThread(() => {
+                    NebliDex_Activity.Window.AddFlags(Android.Views.WindowManagerFlags.KeepScreenOn); // Force screen to stay on
                     App.UpdateSplashPageStatus("Loading Databases");
                 });
             }
@@ -1703,7 +1702,14 @@ namespace NebliDex_Mobile.Droid
                 current_ui_page = 4; //Change page to settings so user know full connection not there yet
             }
 
-            if(NebliDex_UI != null)
+            if (NebliDex_Activity != null)
+            {
+                NebliDex_Activity.RunOnUiThread(() => {
+                    NebliDex_Activity.Window.ClearFlags(Android.Views.WindowManagerFlags.KeepScreenOn); // Remove the flag
+                });
+            }
+
+            if (NebliDex_UI != null)
             {
                 NebliDex_Activity.RunOnUiThread(() => {
                     NebliDex_UI.LoadPage(current_ui_page);

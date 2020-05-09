@@ -19,6 +19,7 @@ namespace NebliDex_Mobile.Droid
         public static System.Object transactionLock = new System.Object(); //This is a lock that prevents multiple active transactions
         public static decimal[] blockchain_fee = new decimal[7]; //Ordered based on cointype
         public static decimal ndex_fee = 10; //10 Total for trade, usually split per trader
+        public static decimal taker_fee = 0.002m; // 0.2% Taker fee that goes directly to maker, paid in requested coin
         public static decimal[] dust_minimum = new decimal[7]; //The smallest UTXOUT for a transaction possible, otherwise it will be rejected
         public static bool testnet_mode = false; //Easy switch between testnet and main
         public static uint ntp1downcounter = 0; //If more than 2 down counts, network is down
@@ -1808,13 +1809,26 @@ namespace NebliDex_Mobile.Droid
                                     bool timeout;
                                     bool broadcast_ok = true;
                                     string txhash;
+                                    string calculated_txhash;
                                     if (tx != null)
                                     {
                                         txhash = TransactionBroadcast(maker_cointype, tx.ToHex(), out timeout);
+                                        calculated_txhash = tx.GetHash().ToString();
+                                        if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                        {
+                                            NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                            txhash = "";
+                                        }
                                     }
                                     else
                                     {
                                         txhash = TransactionBroadcast(maker_cointype, eth_tx.Signed_Hex, out timeout);
+                                        calculated_txhash = eth_tx.HashID;
+                                        if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                        {
+                                            NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                            txhash = "";
+                                        }
                                     }
                                     if (txhash.Length == 0 || timeout == true)
                                     {
@@ -2040,6 +2054,11 @@ namespace NebliDex_Mobile.Droid
                                         SetMyTransactionData("txhash", JsonConvert.SerializeObject(txinfo), reqtime, table.Rows[i]["order_nonce_ref"].ToString()); //Update txhash
                                         bool timeout;
                                         string txhash = TransactionBroadcast(cointype, txhex, out timeout);
+                                        if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                        {
+                                            NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                            txhash = "";
+                                        }
                                         //Even if a power failure happens here, we will be able to switch over to monitoring tx on next boot up
                                         if (txhash.Length > 0)
                                         {
@@ -2137,13 +2156,26 @@ namespace NebliDex_Mobile.Droid
                                             bool broadcast_ok = true;
 
                                             string txhash = "";
+                                            string calculated_txhash = "";
                                             if (tx != null)
                                             {
                                                 txhash = TransactionBroadcast(cointype, tx.ToHex(), out timeout);
+                                                calculated_txhash = tx.GetHash().ToString();
+                                                if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                                {
+                                                    NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                                    txhash = "";
+                                                }
                                             }
                                             else
                                             {
                                                 txhash = TransactionBroadcast(cointype, eth_tx.Signed_Hex, out timeout);
+                                                calculated_txhash = eth_tx.HashID;
+                                                if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                                {
+                                                    NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                                    txhash = "";
+                                                }
                                             }
                                             if (txhash.Length == 0 || timeout == true)
                                             {
@@ -2212,13 +2244,26 @@ namespace NebliDex_Mobile.Droid
                                         bool timeout;
                                         bool broadcast_ok = true;
                                         string txhash;
+                                        string calculated_txhash;
                                         if (tx != null)
                                         {
                                             txhash = TransactionBroadcast(taker_cointype, tx.ToHex(), out timeout);
+                                            calculated_txhash = tx.GetHash().ToString();
+                                            if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                            {
+                                                NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                                txhash = "";
+                                            }
                                         }
                                         else
                                         {
                                             txhash = TransactionBroadcast(taker_cointype, eth_tx.Signed_Hex, out timeout);
+                                            calculated_txhash = eth_tx.HashID;
+                                            if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                            {
+                                                NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                                txhash = "";
+                                            }
                                         }
                                         if (txhash.Length == 0 || timeout == true)
                                         {
@@ -2344,13 +2389,26 @@ namespace NebliDex_Mobile.Droid
                                         bool timeout;
                                         bool broadcast_ok = true;
                                         string txhash;
+                                        string calculated_txhash;
                                         if (tx != null)
                                         {
                                             txhash = TransactionBroadcast(cointype, tx.ToHex(), out timeout);
+                                            calculated_txhash = tx.GetHash().ToString();
+                                            if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                            {
+                                                NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                                txhash = "";
+                                            }
                                         }
                                         else
                                         {
                                             txhash = TransactionBroadcast(cointype, eth_tx.Signed_Hex, out timeout);
+                                            calculated_txhash = eth_tx.HashID;
+                                            if (txhash.ToLower().Equals(calculated_txhash.ToLower()) == false)
+                                            {
+                                                NebliDexNetLog("Calculated transaction hash failed to match returned hash");
+                                                txhash = "";
+                                            }
                                         }
                                         if (txhash.Length == 0 || timeout == true)
                                         {
@@ -2786,21 +2844,25 @@ namespace NebliDex_Mobile.Droid
                         //Find the tokens in the unspent
                         bool no_token = true;
                         int height = Convert.ToInt32(utxo["blockheight"].ToString());
-                        foreach (JToken token in utxo["tokens"])
+                        if(utxo["tokens"] != null)
                         {
-                            //There can be more than one token per utxo
-                            no_token = false;
-                            string id = token["tokenId"].ToString();
-                            if (id.Equals(tokenid) == true)
+                            //Neblio daemon will sometimes omit the token array field
+                            foreach (JToken token in utxo["tokens"])
                             {
-                                //This is our desired token
-                                if (height >= 0)
+                                //There can be more than one token per utxo
+                                no_token = false;
+                                string id = token["tokenId"].ToString();
+                                if (id.Equals(tokenid) == true)
                                 {
-                                    sat_amount += Decimal.Parse(token["amount"].ToString());
-                                }
-                                else
-                                {
-                                    unconfirmed_exist = true;
+                                    //This is our desired token
+                                    if (height >= 0)
+                                    {
+                                        sat_amount += Decimal.Parse(token["amount"].ToString());
+                                    }
+                                    else
+                                    {
+                                        unconfirmed_exist = true;
+                                    }
                                 }
                             }
                         }
@@ -3126,15 +3188,19 @@ namespace NebliDex_Mobile.Droid
                         int height = Convert.ToInt32(utxo["blockheight"].ToString());
                         if (height >= 0)
                         { //Do not count unconfirmed transactions
-                            foreach (JToken token in utxo["tokens"])
+                            if (utxo["tokens"] != null)
                             {
-                                //Like mentioned earlier, there can be more than one token per unspent
-                                no_token = false;
-                                string id = token["tokenId"].ToString();
-                                if (id.Equals(tokenid) == true)
+                                //Neblio daemon will sometimes omit the token array field
+                                foreach (JToken token in utxo["tokens"])
                                 {
-                                    //This is our desired token
-                                    sat_amount += Decimal.Parse(token["amount"].ToString());
+                                    //Like mentioned earlier, there can be more than one token per unspent
+                                    no_token = false;
+                                    string id = token["tokenId"].ToString();
+                                    if (id.Equals(tokenid) == true)
+                                    {
+                                        //This is our desired token
+                                        sat_amount += Decimal.Parse(token["amount"].ToString());
+                                    }
                                 }
                             }
                             if (cointype == 0 && no_token == true)
@@ -3320,10 +3386,13 @@ namespace NebliDex_Mobile.Droid
                             line["tx_pos"] = row["index"];
                             line["tx_value"] = row["value"];
                             line["tx_tokenid"] = "";
-                            foreach (JToken token in row["tokens"])
+                            if(row["tokens"] != null)
                             {
-                                line["tx_tokenid"] = token["tokenId"].ToString();
-                                break; //Only get the first token ID, just to verify if tokens are there
+                                foreach (JToken token in row["tokens"])
+                                {
+                                    line["tx_tokenid"] = token["tokenId"].ToString();
+                                    break; //Only get the first token ID, just to verify if tokens are there
+                                }
                             }
                             utxo_array.Add(line);
                             total_utxo++;
@@ -3895,23 +3964,26 @@ namespace NebliDex_Mobile.Droid
                 {
                     bool token_present = false;
                     int token_count = 0;
-                    foreach (JObject token in utxo["tokens"])
+                    if(utxo["tokens"] != null)
                     {
-                        //Go through the list of tokens in this UTXO, may have duplicate tokens
-                        if (token["tokenId"].ToString() == token_types[i])
+                        foreach (JObject token in utxo["tokens"])
                         {
-                            token_present = true;
-                            match = true;
-                            if (tokeninput_amounts.ContainsKey(token_types[i]) == false)
+                            //Go through the list of tokens in this UTXO, may have duplicate tokens
+                            if (token["tokenId"].ToString() == token_types[i])
                             {
-                                tokeninput_amounts[token_types[i]] = Convert.ToInt64(token["amount"].ToString());
+                                token_present = true;
+                                match = true;
+                                if (tokeninput_amounts.ContainsKey(token_types[i]) == false)
+                                {
+                                    tokeninput_amounts[token_types[i]] = Convert.ToInt64(token["amount"].ToString());
+                                }
+                                else
+                                {
+                                    tokeninput_amounts[token_types[i]] += Convert.ToInt64(token["amount"].ToString()); //Get the amount of this token type
+                                }
                             }
-                            else
-                            {
-                                tokeninput_amounts[token_types[i]] += Convert.ToInt64(token["amount"].ToString()); //Get the amount of this token type
-                            }
+                            token_count++;
                         }
-                        token_count++;
                     }
                     if (token_present == true)
                     {
