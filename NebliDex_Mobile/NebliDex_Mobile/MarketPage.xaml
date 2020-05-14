@@ -124,7 +124,8 @@
                                   HorizontalOptions="FillAndExpand" 
                                   SeparatorVisibility="None" 
                                   Margin="10" 
-                                  HasUnevenRows="True" 
+                                  HasUnevenRows="False" 
+                                  RowHeight="19"
                                   HeightRequest="100"
                                   ItemAppearing="AutosizeListView" 
                                   ItemDisappearing="AutosizeListView"
@@ -133,7 +134,7 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Grid IsVisible="{Binding In_Order}">
+                                        <Grid IsVisible="{Binding In_Order}" IsClippedToBounds="True">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="5*"/>
                                                 <ColumnDefinition Width="5*"/>
@@ -152,7 +153,8 @@
                                   HorizontalOptions="FillAndExpand" 
                                   SeparatorVisibility="None" 
                                   Margin="10" 
-                                  HasUnevenRows="True"
+                                  HasUnevenRows="False" 
+                                  RowHeight="19"
                                   HeightRequest="100"
                                   ItemAppearing="AutosizeListView" 
                                   ItemDisappearing="AutosizeListView"
@@ -186,7 +188,8 @@
                     </ContentView>
                     <ListView x:Name="Recent_Trade_List" 
                               HorizontalOptions="FillAndExpand" 
-                              HasUnevenRows="True" 
+                              HasUnevenRows="False"
+                              RowHeight="15"
                               SeparatorVisibility="None" 
                               Margin="10"
                               HeightRequest="100"

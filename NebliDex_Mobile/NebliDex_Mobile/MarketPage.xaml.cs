@@ -295,19 +295,16 @@ namespace NebliDex_Mobile
         private void AutosizeListView(object sender, ItemVisibilityEventArgs e)
         {
             ListView view = sender as ListView;
-            double rowHeight = Label_24H.FontSize;
+            double rowHeight = view.RowHeight;
             double height = 100;
             if (view == Buying_View)
             {
-                rowHeight += 5; //Add extra height for spacing
-                height = Buying_View_List.Count * rowHeight;               
+                height = Buying_View_List.Count * rowHeight;
             }else if(view == Selling_View)
             {
-                rowHeight += 5; //Add extra height for spacing
                 height = Selling_View_List.Count * rowHeight;
             }else if(view == Recent_Trade_List)
             {
-                rowHeight = 15;
                 height = (MainService.RecentTradeList[MainService.exchange_market].Count+1) * rowHeight;
             }
             //Increase size by factor of 100
