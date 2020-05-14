@@ -163,7 +163,7 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Grid IsVisible="{Binding In_Order}">
+                                        <Grid IsVisible="{Binding In_Order}" IsClippedToBounds="True">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="5*"/>
                                                 <ColumnDefinition Width="5*"/>
