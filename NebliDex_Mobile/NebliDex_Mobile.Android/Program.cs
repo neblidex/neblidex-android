@@ -25,7 +25,7 @@ namespace NebliDex_Mobile.Droid
         //Mainnet version
         public static int protocol_version = 11; //My protocol version
         public static int protocol_min_version = 11; //Minimum accepting protocol version
-        public static string version_text = "v11.0.0";
+        public static string version_text = "v11.0.2";
         public static bool run_headless = false; //If true, this software is ran in critical node mode without GUI on startup
         public static bool http_open_network = true; //This becomes false if user closes window
         public static int sqldatabase_version = 3;
@@ -37,6 +37,7 @@ namespace NebliDex_Mobile.Droid
         //Version 11
         //Changed fee schedule, added a taker only fee of 0.2%
         //Fix possible case where ERC20 token transaction fails due to unallocated allowance
+        //Updated DNS seed list
 
         public static string App_Path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //This will be the folder for application data
 
